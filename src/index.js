@@ -1,12 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ConfigProvider,DatePicker,message } from 'antd'
+import zhCN from 'antd/es/locale/zh_CN';
+import moment from 'moment';
+import 'antd/dist/antd.css';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class App extends React.Component{
+    state = {
+        date:null
+    };
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+    handleChange = date=>{
+        message.info(`您选择的日期是：${date?date.format('YYYY-MM-DD'):'未选择'}`);
+        this.setState({date});
+    }
+
+    render(){
+        const {date} = this.state;
+        return(
+            <ConfigProvider locale={zhCN}>
+                <div style={{width:400,margin:'100px auto'}}>
+                    <DatePicker onChange={this.handleChange} />
+                    <div style={{marginTop:20}}>
+                        当前日期：{date?date.format('YYYY-MM-DD'):'未选择'}
+                    </div>
+                </div>
+            </ConfigProvider>
+        )
+    }
+}
+
+ReactDOM.render(<App />,document.getElementById('root'));
